@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Support\Api\GoogleVisionApi;
 
 class ImageController extends Controller
 {
@@ -33,5 +34,22 @@ class ImageController extends Controller
         }
         $path = $request->file->store('public');
         return view('image.index')->with('filename', basename($path));
+    }
+        /**
+     * 文字認識
+     * 
+     * @param Request $request
+     * @return type
+     */
+    public function detect(Request $request)
+    {
+        $image_path = $request->input('imagepath');
+        // OCR実行 by GoogleVisionAPI
+        $api = new GoogleVisionApi();
+        $text = $api->document_text_detection($image_path);
+        return view('image.index')->with([
+            'filename' => basename($image_path),
+            'result_text' => $text
+        ]);
     }
 }

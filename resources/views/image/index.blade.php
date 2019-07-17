@@ -43,6 +43,20 @@
                 <a href="{{ asset('storage/'.$filename) }}" data-lightbox="detectimage">
                     <img src="{{ asset('storage/'.$filename) }}" width="200" height="150" />
                 </a>
+                <!-- OCR認識フォーム -->
+                <hr>
+                {!! Form::open(['url' => '/detect', 'method' => 'post', 'files' => false]) !!}
+                <div class="form-group">
+                    {!! Form::hidden('imagepath', asset('storage/'.$filename)) !!}
+                    {!! Form::submit('文字認識', ['class' => 'btn btn-danger']) !!}
+                </div>
+                {!! Form::close() !!}
+                @endisset
+                <!-- 認識結果表示 -->
+                @isset($result_text)
+                <div class="form-group">
+                    {!! Form::textarea('result_text', $result_text, ['class' => 'form-control', 'rows' => '20']) !!}
+                </div>
                 @endisset
             </div>
         </div>
